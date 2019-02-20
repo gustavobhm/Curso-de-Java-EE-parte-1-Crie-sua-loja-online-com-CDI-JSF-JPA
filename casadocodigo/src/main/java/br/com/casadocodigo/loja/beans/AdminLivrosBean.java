@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
@@ -28,6 +30,9 @@ public class AdminLivrosBean {
 	@Inject
 	private AutorDao autorDao;
 
+	@Inject
+	private FacesContext context;
+
 	public List<Autor> getAutores() {
 		return autorDao.listar();
 	}
@@ -39,9 +44,11 @@ public class AdminLivrosBean {
 		}
 
 		dao.salvar(livro);
-		System.out.println("Livro Cadastrado: " + livro);
 
-		return "/livros/lista?faces-redirect=true"; // E retornamos a página que o usuário irá sem o .xhtml
+		context.getExternalContext().getFlash().setKeepMessages(true);
+		context.addMessage(null, new FacesMessage("Livro cadastrado com sucesso!"));
+
+		return "/livros/lista?faces-redirect=true";
 	}
 
 	public List<Integer> getAutoresId() {
