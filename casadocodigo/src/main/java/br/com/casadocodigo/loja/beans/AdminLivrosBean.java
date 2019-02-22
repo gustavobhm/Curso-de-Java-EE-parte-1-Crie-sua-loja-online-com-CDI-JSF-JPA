@@ -7,10 +7,12 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.Part;
 import javax.transaction.Transactional;
 
 import br.com.casadocodigo.loja.daos.AutorDao;
 import br.com.casadocodigo.loja.daos.LivroDao;
+import br.com.casadocodigo.loja.infra.FileSaver;
 import br.com.casadocodigo.loja.models.Autor;
 import br.com.casadocodigo.loja.models.Livro;
 
@@ -30,14 +32,17 @@ public class AdminLivrosBean {
 	@Inject
 	private FacesContext context;
 
-	public List<Autor> getAutores() {
-		return autorDao.listar();
-	}
+	private Part capaLivro;
 
 	@Transactional
-	public String salvar() { // Mudamos o tipo de retorno
+	public String salvar() {
 
 		dao.salvar(livro);
+
+		FileSaver fileSaver = new FileSaver(); // Nossa nova classe
+
+		livro.setCapaPath(fileSaver.write(capaLivro, "livros")); // Já chamamos o método write e já retornamos o path
+																	// direto para o Livro
 
 		context.getExternalContext().getFlash().setKeepMessages(true);
 		context.addMessage(null, new FacesMessage("Livro cadastrado com sucesso!"));
@@ -51,6 +56,18 @@ public class AdminLivrosBean {
 
 	public void setLivro(Livro livro) {
 		this.livro = livro;
+	}
+
+	public Part getCapaLivro() {
+		return capaLivro;
+	}
+
+	public void setCapaLivro(Part capaLivro) {
+		this.capaLivro = capaLivro;
+	}
+
+	public List<Autor> getAutores() {
+		return autorDao.listar();
 	}
 
 }

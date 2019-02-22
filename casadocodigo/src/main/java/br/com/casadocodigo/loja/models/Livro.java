@@ -45,10 +45,20 @@ public class Livro {
 	@Temporal(TemporalType.DATE)
 	private Calendar dataPublicacao;
 
+	private String capaPath;
+
 	@ManyToMany
 	@Size(min = 1) // número mínimo de elementos na lista
 	@NotNull // A lista não pode ser nula
 	private List<Autor> autores = new ArrayList<>();
+
+	public String getCapaPath() {
+		return capaPath;
+	}
+
+	public void setCapaPath(String capaPath) {
+		this.capaPath = capaPath;
+	}
 
 	public String getTitulo() {
 		return titulo;
