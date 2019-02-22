@@ -1,6 +1,5 @@
 package br.com.casadocodigo.loja.beans;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -21,8 +20,6 @@ public class AdminLivrosBean {
 
 	private Livro livro = new Livro();
 
-	private List<Integer> autoresId = new ArrayList<>(); // fazemos new para evitar NullPointerException
-
 	// Context and Dependency Injection
 	@Inject
 	private LivroDao dao;
@@ -39,9 +36,6 @@ public class AdminLivrosBean {
 
 	@Transactional
 	public String salvar() { // Mudamos o tipo de retorno
-		for (Integer autorId : autoresId) {
-			livro.getAutores().add(new Autor(autorId));
-		}
 
 		dao.salvar(livro);
 
@@ -49,14 +43,6 @@ public class AdminLivrosBean {
 		context.addMessage(null, new FacesMessage("Livro cadastrado com sucesso!"));
 
 		return "/livros/lista?faces-redirect=true";
-	}
-
-	public List<Integer> getAutoresId() {
-		return autoresId;
-	}
-
-	public void setAutoresId(List<Integer> autoresId) {
-		this.autoresId = autoresId;
 	}
 
 	public Livro getLivro() {
