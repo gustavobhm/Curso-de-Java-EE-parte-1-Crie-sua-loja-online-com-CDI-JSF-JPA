@@ -52,6 +52,14 @@ public class Livro {
 	@NotNull // A lista não pode ser nula
 	private List<Autor> autores = new ArrayList<>();
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public String getCapaPath() {
 		return capaPath;
 	}
